@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Untuk Ayu</title>
+
+<style>
+body{
+  margin:0;min-height:100vh;font-family:"Segoe UI",sans-serif;
+  background:linear-gradient(135deg,#bfdbfe,#93c5fd,#60a5fa);
+  overflow:hidden;display:flex;justify-content:center;align-items:center;
+  transition:1s;
+}
+body.night{
+  background:linear-gradient(135deg,#0f172a,#1e3a8a);
+}
+
+/* PARTIKEL */
+.heart,.flower{position:fixed;pointer-events:none;z-index:1}
+.heart{color:rgba(96,165,250,.25);animation:floatUp linear infinite}
+.flower{animation:fall linear infinite}
+@keyframes floatUp{from{transform:translateY(100vh)}to{transform:translateY(-10vh);opacity:0}}
+@keyframes fall{from{transform:translateY(-10vh)}to{transform:translateY(110vh)}}
+
+/* PASSWORD */
+.password-box{
+  position:fixed;inset:0;background:rgba(255,255,255,.96);
+  display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:50
+}
+.password-box input{
+  padding:12px 16px;border-radius:999px;border:1px solid #93c5fd
+}
+.password-box button{
+  margin-top:10px;padding:10px 18px;border:none;border-radius:999px;
+  background:#2563eb;color:white
+}
+
+/* AMPL0P */
+.envelope{
+  width:340px;height:210px;background:#fff;border-radius:14px;cursor:pointer;
+  box-shadow:0 20px 60px rgba(0,0,0,.25);position:relative;z-index:10;
+  display:flex;align-items:center;justify-content:center;font-weight:bold;
+  color:#1d4ed8;font-size:16px
+}
+.envelope::before{
+content:"";position:absolute;top:0;left:0;
+border-left:170px solid transparent;border-right:170px solid transparent;
+border-top:110px solid #3b82f6;transform-origin:top;transition:.8s}
+.envelope.open::before{transform:rotateX(180deg)}
+
+/* KARTU */
+.card{
+  display:none;width:92%;max-width:1000px;background:#fff;border-radius:26px;
+  box-shadow:0 24px 70px rgba(0,0,0,.25);padding:26px;
+  grid-template-columns:1fr 1fr;gap:22px;z-index:10
+}
+.card.show{display:grid}
+@media(max-width:750px){.card{grid-template-columns:1fr}}
+
+.glow{
+  color:#2563eb;
+  animation:glow 1.5s infinite alternate;
+  font-weight:bold
+}
+@keyframes glow{
+  from{text-shadow:0 0 8px #60a5fa}
+  to{text-shadow:0 0 24px #2563eb}
+}
+
+.preview{
+  padding:18px;border:1px dashed #60a5fa;border-radius:20px;
+  background:#eff6ff;min-height:360px;overflow-y:auto;line-height:1.8
+}
+.paragraph{opacity:0;animation:fade 1s forwards;margin-bottom:14px}
+@keyframes fade{to{opacity:1}}
+
+audio{width:100%;margin-top:8px}
+
+/* SLIDESHOW */
+.slideshow{
+  margin-top:16px;
+  width:100%;
+  height:320px;              /* DISESUAIKAN JADI BESAR */
+  border-radius:20px;       /* Sudut lebih lembut */
+  overflow:hidden;
+  position:relative;
+  box-shadow:0 14px 36px rgba(0,0,0,.35)
+}
+
+/* Versi ekstra besar untuk layar besar */
+@media (min-width: 900px) {
+  .slideshow{
+    height:420px;
+  }
+}
+
+.slideshow img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  opacity:0;
+  transition:opacity 1.2s ease-in-out;
+}
+.slideshow img.active{
+  opacity:1;
+}
+</style>
+</head>
+<body>
+
+<div class="password-box" id="lock">
+  <h3 style="color:#2563eb">Masukkan Password</h3>
+  <input type="password" id="pass" placeholder="Password...">
+  <button onclick="checkPass()">Buka</button>
+  <div id="passStatus" style="font-size:12px;margin-top:6px;color:red"></div>
+</div>
+
+<div class="envelope" id="env">💌 Buka Surat Biru Untuk Ayu</div>
+
+<div class="card" id="card">
+  <div>
+    <h2>Untuk <span class="glow">Ayu</span> 💙</h2>
+    <div id="tanggal" style="font-size:13px;color:#555;margin-bottom:6px"></div>
+
+    <audio id="audio" controls loop>
+      <source src="terbuang-dalam-waktu.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- SLIDESHOW FOTO -->
+    <div class="slideshow" id="slideshow">
+      <img src="foto1.jpg" class="active">
+      <img src="foto2.jpg">
+      <img src="foto3.jpg">
+      <img src="foto4.jpg">
+      <img src="foto5.jpg">
+      <img src="foto7.jpg">
+      </div>
+  </div>
+
+  <div>
+    <div class="preview" id="output"></div>
+  </div>
+</div>
+
+<script>
+/* PASSWORD */
+const correctPass="051200";
+function checkPass(){
+  if(document.getElementById("pass").value===correctPass){
+    document.getElementById("lock").style.display="none";
+  }else{
+    document.getElementById("passStatus").textContent="Password salah";
+  }
+}
+
+/* PARTIKEL */
+setInterval(()=>{
+  const h=document.createElement("div");
+  h.className="heart";h.textContent="💙";
+  h.style.left=Math.random()*100+"vw";
+  h.style.fontSize=12+Math.random()*18+"px";
+  h.style.animationDuration=4+Math.random()*6+"s";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),10000);
+},450);
+
+setInterval(()=>{
+  const f=document.createElement("div");
+  f.className="flower";f.textContent="❄️";
+  f.style.left=Math.random()*100+"vw";
+  f.style.animationDuration=6+Math.random()*6+"s";
+  document.body.appendChild(f);
+  setTimeout(()=>f.remove(),12000);
+},700);
+
+/* PESAN */
+const paragraphs = [
+"Selamat ulang tahun, Ayu Sagita Ardanareswari. Di hari yang spesial ini, aku ingin kamu tahu bahwa kehadiranmu adalah salah satu hal terbaik yang pernah hadir dalam hidupku. Terima kasih karena sudah tetap menjadi Ayu yang hangat, kuat, dan penuh ketulusan sampai hari ini.",
+"Dalam setiap proses hidup yang kamu jalani, semoga kamu selalu diberi kesehatan, ketenangan hati, dan kekuatan yang cukup untuk menghadapi semuanya. Semoga langkah-langkahmu selalu dimudahkan, semoga lelahmu selalu digantikan dengan hal-hal baik, dan semoga senyummu tidak pernah kehilangan alasan untuk kembali hadir di wajahmu.",
+"Ayu, aku ingin jujur dari hati yang paling dalam. Terima kasih karena selama ini kamu sudah begitu sabar menghadapi segala kekuranganku. Dan aku benar-benar minta maaf atas setiap sikap, kata, dan kehadiranku yang mungkin pernah membuatmu kecewa, sedih, atau merasa sendirian. Itu bukan karena aku tidak peduli, tapi justru karena aku peduli, aku masih terus belajar menjadi pribadi yang lebih baik untukmu.",
+"Semoga di hari ulang tahunmu ini, kamu dikelilingi oleh orang-orang yang tulus menyayangimu tanpa syarat, oleh doa-doa baik yang datang dari berbagai arah, dan oleh hal-hal sederhana yang mampu menenangkan hatimu. Semoga kamu selalu merasa cukup, merasa dicintai, dan merasa tidak pernah benar-benar sendirian.",
+"Dan di antara begitu banyak kenangan yang pernah kita lalui, aku hanya ingin kamu tahu satu hal: kamu selalu punya tempat yang istimewa di hatiku. Apa pun yang akan terjadi ke depan, aku akan selalu mendoakan yang terbaik untukmu, dengan caraku yang paling tulus dan penuh rasa."
+];
+
+
+const env=document.getElementById("env");
+const card=document.getElementById("card");
+const out=document.getElementById("output");
+const audio=document.getElementById("audio");
+
+env.onclick=()=>{
+  document.body.classList.add("night");
+  env.classList.add("open");
+  if(navigator.vibrate) navigator.vibrate(200);
+
+  setTimeout(()=>{
+    env.style.display="none";
+    card.classList.add("show");
+
+    /* LAGU LANGSUNG MULAI DI 2:57 */
+    audio.currentTime = 177; // 2 menit 57 detik
+    audio.muted = true;
+    audio.play().then(() => {
+      setTimeout(() => audio.muted = false, 400);
+    }).catch(() => {
+      // jika autoplay diblokir, Ayu tetap bisa tekan play
+    });
+
+    showText();
+  },800)
+};
+
+
+function showText(){
+  const delays = [
+    0,      // Paragraf 1 langsung muncul saat lagu mulai
+    12000,  // Paragraf 2 muncul setelah 12 detik
+    26000,  // Paragraf 3 setelah 26 detik
+    42000,  // Paragraf 4 setelah 42 detik
+    62000   // Paragraf 5 setelah 62 detik (penutup yang paling dalam)
+  ];
+
+  paragraphs.forEach((text, i) => {
+    setTimeout(() => {
+      const p = document.createElement("div");
+      p.className = "paragraph";
+      p.textContent = text;
+      out.appendChild(p);
+      out.scrollTop = out.scrollHeight;
+    }, delays[i]);
+  });
+}
+
+/* TANGGAL */
+document.getElementById("tanggal").textContent =
+"Hari ini, Jumat, 5 Desember 2025 — hari spesialmu 💙";
+
+/* SLIDESHOW OTOMATIS */
+const slides = document.querySelectorAll("#slideshow img");
+let currentSlide = 0;
+
+setInterval(() => {
+  slides[currentSlide].classList.remove("active");
+  currentSlide = (currentSlide + 1) % slides.length;
+  slides[currentSlide].classList.add("active");
+}, 3500); // ganti foto tiap 3.5 detik
+</script>
+
+</body>
+</html>
